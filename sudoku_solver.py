@@ -29,11 +29,11 @@ def check_rows(sudoku_expanded):
                 known_row_values.append(sudoku_expanded[i][j][0]) #add it to the list of known values
         for j in range(len(sudoku_expanded)): # remove known values from possible values
             if (len(sudoku_expanded[i][j])>1): #if the value is not known
-                try:
-                    for k in range(len(known_row_values)):#remove known values
+                for k in range(len(known_row_values)):#remove known values
+                    try:
                         sudoku_expanded[i][j].remove(known_row_values[k])
-                except:
-                    pass
+                    except:
+                        pass
     return sudoku_expanded
 
 def check_columns(sudoku_expanded):
@@ -45,15 +45,15 @@ def check_columns(sudoku_expanded):
         for j in range(len(sudoku_expanded)): # Check for known values
             if (len(sudoku_expanded[j][i])==1): #if the value is already known
                 known_column_values.append(sudoku_expanded[j][i][0]) #add it to the list of known values
-        print("known_column_values",known_column_values)
         for j in range(len(sudoku_expanded)): # remove known values from possible values
             if (len(sudoku_expanded[j][i])>1): #if the value is not known
-                try:
-                    for k in range(len(known_column_values)):#remove known values
-                        sudoku_expanded[j][i].remove(known_column_values[k])
-                        print("removed",known_column_values[k],"from",i,j)
-                except:
-                    pass
+                for k in range(len(known_column_values)):#remove known values
+                    try:
+                        print("removing",known_column_values[k],"from",sudoku_expanded[j][i],"at",i,j)
+                        sudoku_expanded[i][j].remove(known_column_values[k])
+                        print("removed",known_column_values[k],"from",sudoku_expanded[j][i],"at",i,j)
+                    except:
+                        pass
     return sudoku_expanded
 
 def check_squares(sudoku_expanded):
@@ -71,12 +71,11 @@ def check_squares(sudoku_expanded):
                 if(len(sudoku_expanded[i2][j2])==1):
                     known_square_values.append(sudoku_expanded[i2][j2][0])
                 if(len(sudoku_expanded[i2][j2])>1):
-                    try:
-                        print("square solving",i2,j2,)
-                        for k in range(len(known_square_values)):
-                            sudoku_expanded[i2][j2].remove(known_square_values[k])
-                    except:
-                        pass
+                    for k in range(len(known_square_values)):#remove known values
+                        try:
+                            sudoku_expanded[i][j].remove(known_square_values[k])
+                        except:
+                            pass
     return sudoku_expanded
 
 def check_sudoku(sudoku_expanded):
