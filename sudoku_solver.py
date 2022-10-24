@@ -153,16 +153,16 @@ def check_sudoku(sudoku_expanded):
     """
     Checks the sudoku for possible values
     """
-    #print_sudoku(sudoku_expanded)
+    # print_sudoku(sudoku_expanded)
     sudoku_expanded = check_rows(sudoku_expanded)
-    #print("rows")
-    #print_sudoku(sudoku_expanded)
-    #print("columns")
+    # print("rows")
+    # print_sudoku(sudoku_expanded)
+    # print("columns")
     sudoku_expanded = check_columns(sudoku_expanded)
-    #print_sudoku(sudoku_expanded)
-    #print("squares")
+    # print_sudoku(sudoku_expanded)
+    # print("squares")
     sudoku_expanded = check_squares(sudoku_expanded)
-    #print_sudoku(sudoku_expanded)
+    # print_sudoku(sudoku_expanded)
     return sudoku_expanded
 
 
@@ -175,6 +175,7 @@ def is_solved(sudoku_expanded):
             if len(sudoku_expanded[i][j]) > 1:
                 return False
     return True
+
 
 def is_valid(sudoku_expanded):
     """
@@ -201,30 +202,43 @@ def print_sudoku(sudoku_expanded):
         print()
     print()
 
-def reduce_sudoku(sudoku_expanded):
+
+def solve_sudoku(sudoku_expanded):
     """
     Reduces the sudoku
     """
     for i in range(10):
-        if(is_solved(sudoku_expanded)):
-            return sudoku_expanded
         sudoku_expanded = check_sudoku(sudoku_expanded)
+    
+    if(is_solved(sudoku_expanded)):
+        return sudoku_expanded
+    
+    # if not solved yet, try to solve it by guessing
+    i = random.randint(0, len(sudoku_expanded)-1)
+    j = random.randint(0, len(sudoku_expanded)-1)
+    copy_sudoku_expanded = sudoku_expanded.copy()
+    copy_sudoku_expanded[i][j] = [random.choice(sudoku_expanded[i][j])]
+
+    if is_solved(copy_sudoku_expanded):
+        return copy_sudoku_expanded
+    solve_sudoku(copy_sudoku_expanded)
     return sudoku_expanded
 
-def solve_sudoku(sudoku_expanded):
+
+def solve_sudoku_old(sudoku_expanded):
     """
     Solves the sudoku
     """
-    counter=0
+    counter = 0
     while not is_solved(sudoku_expanded):
         sudoku_expanded = check_sudoku(sudoku_expanded)
         counter += 1
         if(counter > 10):
-            i=random.randint(0,len(sudoku_expanded)-1)
-            j=random.randint(0,len(sudoku_expanded)-1)
-            print("randomly choosing",i,j,"with",sudoku_expanded[i][j])
-            choice=random.choice(sudoku_expanded[i][j])
-            print("choosing",choice)
+            i = random.randint(0, len(sudoku_expanded)-1)
+            j = random.randint(0, len(sudoku_expanded)-1)
+            print("randomly choosing", i, j, "with", sudoku_expanded[i][j])
+            choice = random.choice(sudoku_expanded[i][j])
+            print("choosing", choice)
             copy_sudoku_expanded = sudoku_expanded.copy()
             copy_sudoku_expanded[i][j] = [choice]
             copy_sudoku_expanded = solve_sudoku(copy_sudoku_expanded)
@@ -232,6 +246,7 @@ def solve_sudoku(sudoku_expanded):
                 return copy_sudoku_expanded
 
     return sudoku_expanded
+
 
 sudoku_expanded = expand_sudoku(sudoku)
 print_sudoku(sudoku_expanded)
